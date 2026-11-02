@@ -13,16 +13,21 @@ class UsersController extends Controller
 {
     public function index(): JsonResponse
     {
-        return response()->json(User::orderBy('name')->paginate(15));
+        return response()->json(
+            User::orderBy('first_name')->orderBy('last_name')->get()
+        );
     }
 
     public function store(StoreUserRequest $request): JsonResponse
     {
         $user = User::create($request->validated());
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'User created successfully.',
-            'data' => $user,
+            'data'       => $user,
+            'token'      => $token,
+            'token_type' => 'Bearer',
         ], 201);
     }
 

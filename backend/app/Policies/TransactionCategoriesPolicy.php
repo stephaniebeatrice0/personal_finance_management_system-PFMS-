@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\TransactionCategories;
+use App\Models\TransactionCategory;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -19,7 +19,7 @@ class TransactionCategoriesPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, TransactionCategories $transactionCategories): bool
+    public function view(User $user, TransactionCategory $transactionCategory): bool
     {
         return false;
     }
@@ -35,7 +35,7 @@ class TransactionCategoriesPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, TransactionCategories $transactionCategories): bool
+    public function update(User $user, TransactionCategory $transactionCategory): bool
     {
         return false;
     }
@@ -43,7 +43,7 @@ class TransactionCategoriesPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, TransactionCategories $transactionCategories): bool
+    public function delete(User $user, TransactionCategory $transactionCategory): bool
     {
         return false;
     }
@@ -51,7 +51,7 @@ class TransactionCategoriesPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, TransactionCategories $transactionCategories): bool
+    public function restore(User $user, TransactionCategory $transactionCategory): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class TransactionCategoriesPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, TransactionCategories $transactionCategories): bool
+    public function forceDelete(User $user, TransactionCategory $transactionCategory): bool
     {
         return false;
     }
