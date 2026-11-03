@@ -32,7 +32,7 @@ class TransactionCategoriesController extends Controller
     public function update(UpdateTransactionCategoriesRequest $request, ModelsTransactionCategory $transactionCategory): JsonResponse
     {
         $transactionCategory->update(
-            $request->validated() + ['altered_by' => $request->user()->id]
+            $request->validated() + ['updated_by' => $request->user()->id]
         );
 
         return response()->json($transactionCategory->load('type'));

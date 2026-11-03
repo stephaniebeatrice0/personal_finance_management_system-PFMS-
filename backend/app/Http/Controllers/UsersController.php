@@ -21,13 +21,10 @@ class UsersController extends Controller
     public function store(StoreUserRequest $request): JsonResponse
     {
         $user = User::create($request->validated());
-        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'User created successfully.',
-            'data'       => $user,
-            'token'      => $token,
-            'token_type' => 'Bearer',
+            'data'       => $user
         ], 201);
     }
 

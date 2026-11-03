@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreRegisterRequest;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -19,15 +22,22 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (! Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        $request->session()->regenerate();
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json($request->user());
+        return response()->json([
+            'message'    => 'Login successful.',
+            'data'       => $user,
+            'token'      => $token,
+            'token_type' => 'Bearer',
+        ]);
     }
 
     public function me(Request $request): JsonResponse
@@ -40,5 +50,14 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out successfully.']);
+    }
+    public function register(StoreRegisterRequest $request): JsonResponse
+    {
+        $user = User::create($request->validated());
+
+        return response()->json([
+            'message' => 'Account created successfully. Please login.',
+            'data'    => $user,
+        ], 201);
     }
 }

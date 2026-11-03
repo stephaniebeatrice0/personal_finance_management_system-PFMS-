@@ -26,13 +26,13 @@ return new class extends Migration
             $table->foreignId('created_by')
                 ->constrained('users')
                 ->restrictOnDelete();
-            $table->timestamp('created_on')->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
 
             $table->foreignId('updated_by')
                 ->nullable()
                 ->constrained('users')
                 ->nullOnDelete();
-            $table->timestamp('updated_on')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

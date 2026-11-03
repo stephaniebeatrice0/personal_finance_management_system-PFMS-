@@ -15,7 +15,7 @@ class MoneyTransactionsController extends Controller
         return response()->json(
             MoneyTransaction::with(['type', 'category'])
                 ->latest('transaction_date')
-                ->paginate(15)
+                ->get()
         );
     }
 

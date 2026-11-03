@@ -12,15 +12,15 @@ class TransactionCategory extends Model
 {
     protected $table = 'par_transaction_categories';
 
-    const CREATED_AT = 'created_on';
-    const UPDATED_AT = 'altered_on';
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
 
     protected $fillable = [
         'name',
         'transaction_type_id',
         'description',
         'created_by',
-        'altered_by',
+        'updated_by',
     ];
 
     public function type(): BelongsTo
@@ -40,6 +40,6 @@ class TransactionCategory extends Model
 
     public function alteredBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'altered_by');
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }
