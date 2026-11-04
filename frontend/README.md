@@ -1,39 +1,36 @@
-## Base [(Free version)](https://themewagon.github.io/base/)
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
+## Getting Started
 
-> Free React Admin Dashboard made with Material-UI components and React.
+First, run the development server:
 
-![base](https://github.com/user-attachments/assets/b6c35f74-31ba-445d-ac1a-93957039d767)
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## Demo
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/themewagon/base)
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- [Dashboard Page](https://themewagon.github.io/base/)
-- [Sign In Page](https://themewagon.github.io/base/auth/signin)
-- [Sign Up Page](https://themewagon.github.io/base/auth/signup)
-- [Reset Password](https://themewagon.github.io/base/auth/reset-password)
-- [Error 404](https://themewagon.github.io/base/error/404)
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Quick start
+## Learn More
 
-- [Download from Github](https://github.com/themewagon/bankdash/archive/refs/heads/main.zip) or clone the repo : `git clone https://github.com/themewagon/bankdash.git`
-- Recommended `Node.js v18.x`.
-- **Install:** `npm install`
-- **Start:** `npm run dev`
-- **Build:** `npm run build`
+To learn more about Next.js, take a look at the following resources:
 
-## License
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-Distributed under the MIT License. See [LICENSE](https://github.com/minimal-ui-kit/minimal.free/blob/main/LICENSE.md) for more information.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-<a name="readme-top">
-<div align="center">
-<a align="center" href="https://github.com/themewagon/base/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=themewagon/base" /><br />
-</a></a></div>
+## Deploy on Vercel
 
-## Contact us
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Email: support@themewagon.com
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
