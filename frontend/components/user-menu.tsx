@@ -1,17 +1,10 @@
-'use client';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { useRouter } from 'next/navigation';
-import type { User } from '@/lib/types';
+"use client";
+
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import type { User } from "@/lib/types";
+import { logoutAction } from "@/app/action/auth";
 
 export function UserMenu({ user }: { user: User }) {
-  const router = useRouter();
-
-  async function logout() {
-    await fetch('/api/auth/logout', { method: 'POST' });
-    router.replace('/login');
-    router.refresh();
-  }
-
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
@@ -32,7 +25,9 @@ export function UserMenu({ user }: { user: User }) {
           </div>
           <DropdownMenu.Separator className="my-1 h-px bg-slate-200" />
           <DropdownMenu.Item
-            onSelect={logout}
+            onSelect={() => {
+              void logoutAction();
+            }}
             className="cursor-pointer rounded px-2 py-1.5 text-sm outline-none data-[highlighted]:bg-slate-100"
           >
             Sign out

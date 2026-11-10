@@ -1,11 +1,12 @@
-import { redirect } from 'next/navigation';
-import { getUser } from '@/lib/session';
-import { UserMenu } from '@/components/user-menu';
+import { requireUser } from "@/lib/session";
+import { UserMenu } from "@/components/user-menu";
 
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const user = await getUser();
-  // Token present but rejected by the backend: clear it and go to login
-  if (!user) redirect('/api/auth/clear');
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const user = await requireUser();
 
   return (
     <div className="min-h-screen">

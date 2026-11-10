@@ -1,7 +1,9 @@
 'use client';
+
 import { FormEvent, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,9 +25,9 @@ export function RegisterForm() {
 
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           name: form.get('name'),
           email: form.get('email'),
@@ -37,6 +39,18 @@ export function RegisterForm() {
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setError(data.message ?? 'Registration failed');
+        return;
+      }
+
+      // Auto sign-in through NextAuth → populates the JWT + session
+      const result = await signIn('credentials', {
+        email: form.get('email'),
+        password: form.get('password'),
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError('Account created, but sign-in failed. Please sign in manually.');
         return;
       }
 

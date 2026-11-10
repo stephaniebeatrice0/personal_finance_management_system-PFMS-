@@ -45,4 +45,4 @@ return Application::configure(basePath: dirname(__DIR__))
                 'code'    => 'unauthenticated',
             ], 401);
         });
-    });
+    })->create();

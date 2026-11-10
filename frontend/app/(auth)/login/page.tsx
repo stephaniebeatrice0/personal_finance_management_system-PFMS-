@@ -1,10 +1,10 @@
-import { LoginForm } from '@/components/auth/login-form';
+import { LoginForm } from "@/components/auth/login-form";
 
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string; expired?: string }>;
+  searchParams: Promise<{ callbackUrl?: string; expired?: string }>;
 }) {
-  const { from, expired } = await searchParams;
-  return <LoginForm from={from} expired={Boolean(expired)} />;
+  const { callbackUrl, expired } = await searchParams;
+  return <LoginForm callbackUrl={callbackUrl} expired={Boolean(expired)} />;
 }
