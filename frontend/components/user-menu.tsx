@@ -1,39 +1,46 @@
 "use client";
 
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu, IconButton, Text } from "@radix-ui/themes";
 import type { User } from "@/lib/types";
 import { logoutAction } from "@/app/action/auth";
 
 export function UserMenu({ user }: { user: User }) {
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger
-        aria-label="Account menu"
-        className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-medium uppercase text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2"
-      >
-        {user.name.charAt(0)}
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Portal>
-        <DropdownMenu.Content
-          align="end"
-          sideOffset={8}
-          className="min-w-[200px] rounded-md border border-slate-200 bg-white p-1 shadow-md"
+      <DropdownMenu.Trigger>
+        <IconButton
+          variant="solid"
+          radius="full"
+          size="2"
+          aria-label="Account menu"
+          className="font-bold uppercase"
         >
-          <div className="px-2 py-1.5">
-            <p className="text-sm font-medium">{user.name}</p>
-            <p className="text-xs text-slate-500">{user.email}</p>
-          </div>
-          <DropdownMenu.Separator className="my-1 h-px bg-slate-200" />
-          <DropdownMenu.Item
-            onSelect={() => {
-              void logoutAction();
-            }}
-            className="cursor-pointer rounded px-2 py-1.5 text-sm outline-none data-[highlighted]:bg-slate-100"
-          >
-            Sign out
-          </DropdownMenu.Item>
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
+          {user.name.charAt(0)}
+        </IconButton>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content
+        align="end"
+        sideOffset={8}
+        className="min-w-[200px]"
+      >
+        <div className="px-3 py-2">
+          <Text as="p" weight="bold">
+            {user.name}
+          </Text>
+          <Text as="p" size="2" color="gray">
+            {user.email}
+          </Text>
+        </div>
+        <DropdownMenu.Separator />
+        <DropdownMenu.Item
+          color="red"
+          onSelect={() => {
+            void logoutAction();
+          }}
+        >
+          Sign out
+        </DropdownMenu.Item>
+      </DropdownMenu.Content>
     </DropdownMenu.Root>
   );
 }

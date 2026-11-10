@@ -16,3 +16,11 @@ export const requireUser = cache(async (): Promise<User> => {
     email: session.user.email ?? "",
   };
 });
+export const getAccessToken = cache(async (): Promise<string> => {
+  const session = await auth();
+
+  if (!session?.user) redirect("/login");
+  if (!session.accessToken) redirect("/api/session-expired");
+
+  return session.accessToken;
+});
