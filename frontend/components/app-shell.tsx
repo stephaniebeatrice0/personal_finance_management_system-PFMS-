@@ -5,28 +5,41 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { IconButton, Tooltip } from "@radix-ui/themes";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  BarChartIcon,
-  Cross1Icon,
-  DashboardIcon,
-  DoubleArrowLeftIcon,
-  DoubleArrowRightIcon,
-  GearIcon,
-  HamburgerMenuIcon,
-  ListBulletIcon,
+  Analytics01Icon,
+  ArrowDataTransferHorizontalIcon,
+  ArrowLeftDoubleIcon,
+  ArrowRightDoubleIcon,
+  Cancel01Icon,
+  DashboardSquare01Icon,
+  Menu01Icon,
   PieChartIcon,
-} from "@radix-ui/react-icons";
+  Settings02Icon,
+} from "@hugeicons/core-free-icons";
 import type { User } from "@/lib/types";
 import { UserMenu } from "@/components/user-menu";
 
 const MAIN_NAV = [
-  { href: "/dashboard", label: "Overview", icon: DashboardIcon },
-  { href: "/dashboard/transactions", label: "Transactions", icon: ListBulletIcon },
+  { href: "/dashboard", label: "Overview", icon: DashboardSquare01Icon },
+  {
+    href: "/dashboard/transactions",
+    label: "Transactions",
+    icon: ArrowDataTransferHorizontalIcon,
+  },
   { href: "/dashboard/budgets", label: "Budgets", icon: PieChartIcon },
-  { href: "/dashboard/reports", label: "Reports", icon: BarChartIcon },
+  { href: "/dashboard/reports", label: "Reports", icon: Analytics01Icon },
 ];
-const SETTINGS = { href: "/dashboard/settings", label: "Settings", icon: GearIcon };
+const SETTINGS = {
+  href: "/dashboard/settings",
+  label: "Settings",
+  icon: Settings02Icon,
+};
 const STORAGE_KEY = "mm.sidebar";
+
+const NAV_BG = "bg-[var(--accent-4)]";
+const PANEL_SHADOW =
+  "shadow-[0_8px_30px_rgba(15,23,42,0.08),0_2px_6px_rgba(15,23,42,0.05)]";
 
 type NavEntry = (typeof MAIN_NAV)[number];
 
@@ -41,7 +54,6 @@ function NavItem({
   collapsed: boolean;
   onNavigate?: () => void;
 }) {
-  const Icon = item.icon;
   const link = (
     <Link
       href={item.href}
@@ -49,15 +61,23 @@ function NavItem({
       aria-label={item.label}
       aria-current={active ? "page" : undefined}
       className={[
-        "flex items-center gap-3 rounded-md px-3 py-2 text-base transition-colors",
-        collapsed ? "justify-center" : "",
+        "group flex items-center gap-4 rounded-2xl px-4 py-3 text-[15px] text-black",
+        "transition-all duration-150 motion-reduce:transition-none",
+        "hover:bg-white hover:shadow-[0_2px_8px_rgba(15,23,42,0.08)]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30",
+        collapsed ? "justify-center px-0" : "",
         active
-          ? "bg-[var(--accent-a3)] font-bold text-[var(--accent-11)]"
-          : "text-[var(--gray-11)] hover:bg-[var(--gray-a3)] hover:text-[var(--gray-12)]",
+          ? "bg-white font-semibold shadow-[0_2px_10px_rgba(15,23,42,0.12)]"
+          : "font-medium",
       ].join(" ")}
     >
-      <Icon width={18} height={18} className="shrink-0" />
-      {!collapsed && <span>{item.label}</span>}
+      <HugeiconsIcon
+        icon={item.icon}
+        size={22}
+        strokeWidth={active ? 2 : 1.6}
+        className="shrink-0"
+      />
+      {!collapsed && <span className="truncate">{item.label}</span>}
     </Link>
   );
   return collapsed ? (
@@ -69,16 +89,31 @@ function NavItem({
   );
 }
 
-function NavList({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: () => void }) {
+function NavList({
+  collapsed,
+  onNavigate,
+}: {
+  collapsed: boolean;
+  onNavigate?: () => void;
+}) {
   const pathname = usePathname();
-  const isActive = (href: string) => (href === "/dashboard" ? pathname === href : pathname.startsWith(href));
+  const isActive = (href: string) =>
+    href === "/dashboard" ? pathname === href : pathname.startsWith(href);
   const render = (item: NavEntry) => (
-    <NavItem key={item.href} item={item} active={isActive(item.href)} collapsed={collapsed} onNavigate={onNavigate} />
+    <NavItem
+      key={item.href}
+      item={item}
+      active={isActive(item.href)}
+      collapsed={collapsed}
+      onNavigate={onNavigate}
+    />
   );
   return (
-    <nav aria-label="Main" className="flex flex-1 flex-col gap-1 px-2 py-3">
+    <nav aria-label="Main" className="flex flex-1 flex-col gap-2 px-4 py-6">
       {MAIN_NAV.map(render)}
-      <div className="mt-auto">{render(SETTINGS)}</div>
+      <div className="mt-auto border-t border-black/10 pt-4">
+        {render(SETTINGS)}
+      </div>
     </nav>
   );
 }
@@ -88,14 +123,24 @@ function Brand({ collapsed }: { collapsed: boolean }) {
     <Link
       href="/dashboard"
       aria-label="Money Manager home"
-      className={`flex h-14 shrink-0 items-center border-b border-[var(--gray-a5)] ${collapsed ? "justify-center" : "px-5"}`}
+      className={`flex h-20 shrink-0 items-center border-b border-black/10 text-black ${
+        collapsed ? "justify-center" : "px-8"
+      }`}
     >
-      <span className="text-xl font-bold tracking-tight">{collapsed ? "MM" : "Money Manager"}</span>
+      <span className="text-xl font-bold tracking-tight">
+        {collapsed ? "MM" : "Money Manager"}
+      </span>
     </Link>
   );
 }
 
-export function AppShell({ user, children }: { user: User; children: React.ReactNode }) {
+export function AppShell({
+  user,
+  children,
+}: {
+  user: User;
+  children: React.ReactNode;
+}) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -112,10 +157,10 @@ export function AppShell({ user, children }: { user: User; children: React.React
   return (
     <Dialog.Root open={mobileOpen} onOpenChange={setMobileOpen}>
       <div className="flex min-h-screen">
-        {/* Desktop sidebar */}
+        {/* Desktop sidebar: floating rounded panel */}
         <aside
-          className="sticky top-0 hidden h-screen shrink-0 flex-col border-r border-[var(--gray-a5)] bg-[var(--color-panel-solid)] transition-[width] duration-200 motion-reduce:transition-none md:flex"
-          style={{ width: collapsed ? 68 : 244 }}
+          className={`sticky top-4 m-4 mr-0 hidden h-[calc(100vh-2rem)] shrink-0 flex-col overflow-hidden rounded-3xl ${NAV_BG} ${PANEL_SHADOW} transition-[width] duration-200 motion-reduce:transition-none md:flex`}
+          style={{ width: collapsed ? 88 : 288 }}
         >
           <Brand collapsed={collapsed} />
           <NavList collapsed={collapsed} />
@@ -125,14 +170,21 @@ export function AppShell({ user, children }: { user: User; children: React.React
         <Dialog.Overlay className="mm-overlay fixed inset-0 z-40 bg-black/40" />
         <Dialog.Content
           aria-describedby={undefined}
-          className="mm-drawer fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col bg-[var(--color-panel-solid)] shadow-xl outline-none"
+          className={`mm-drawer fixed inset-y-3 left-3 z-50 flex w-80 max-w-[85vw] flex-col overflow-hidden rounded-3xl ${NAV_BG} shadow-2xl outline-none`}
         >
           <Dialog.Title className="sr-only">Navigation</Dialog.Title>
-          <div className="flex items-center justify-between border-b border-[var(--gray-a5)] pr-3">
+          <div className="flex items-center justify-between border-b border-black/10 pr-4">
             <Brand collapsed={false} />
             <Dialog.Close asChild>
-              <IconButton variant="ghost" color="gray" aria-label="Close navigation">
-                <Cross1Icon />
+              <IconButton
+                variant="ghost"
+                color="gray"
+                highContrast
+                size="3"
+                radius="full"
+                aria-label="Close navigation"
+              >
+                <HugeiconsIcon icon={Cancel01Icon} size={20} />
               </IconButton>
             </Dialog.Close>
           </div>
@@ -140,12 +192,22 @@ export function AppShell({ user, children }: { user: User; children: React.React
         </Dialog.Content>
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[var(--gray-a5)] bg-[var(--color-panel-solid)] px-3 sm:px-5">
+          {/* Floating header, dropped lower from the top edge */}
+          <header
+            className={`sticky top-4 z-30 mx-4 mt-4 flex h-20 items-center justify-between rounded-2xl bg-[var(--color-panel-solid)] px-4 sm:px-6 ${PANEL_SHADOW}`}
+          >
             <div>
               <span className="md:hidden">
                 <Dialog.Trigger asChild>
-                  <IconButton variant="ghost" color="gray" aria-label="Open navigation">
-                    <HamburgerMenuIcon width={18} height={18} />
+                  <IconButton
+                    variant="ghost"
+                    color="gray"
+                    highContrast
+                    size="3"
+                    radius="full"
+                    aria-label="Open navigation"
+                  >
+                    <HugeiconsIcon icon={Menu01Icon} size={22} />
                   </IconButton>
                 </Dialog.Trigger>
               </span>
@@ -153,17 +215,27 @@ export function AppShell({ user, children }: { user: User; children: React.React
                 <IconButton
                   variant="ghost"
                   color="gray"
+                  highContrast
+                  size="3"
+                  radius="full"
                   onClick={toggle}
                   aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
                   aria-expanded={!collapsed}
                 >
-                  {collapsed ? <DoubleArrowRightIcon width={18} height={18} /> : <DoubleArrowLeftIcon width={18} height={18} />}
+                  <HugeiconsIcon
+                    icon={
+                      collapsed ? ArrowRightDoubleIcon : ArrowLeftDoubleIcon
+                    }
+                    size={20}
+                  />
                 </IconButton>
               </span>
             </div>
             <UserMenu user={user} />
           </header>
-          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-10">{children}</main>
+          <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-8 sm:px-8 lg:px-12 lg:py-10">
+            {children}
+          </main>
         </div>
       </div>
     </Dialog.Root>

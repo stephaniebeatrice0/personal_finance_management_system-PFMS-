@@ -11,7 +11,7 @@ export function UserMenu({ user }: { user: User }) {
         <IconButton
           variant="solid"
           radius="full"
-          size="2"
+          size="4"
           aria-label="Account menu"
           className="font-bold uppercase"
         >
