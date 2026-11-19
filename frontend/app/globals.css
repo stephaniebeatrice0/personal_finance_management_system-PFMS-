@@ -6,11 +6,15 @@
 
 html .radix-themes,
 html body {
-  --default-font-family: var(--font-plex-serif), Georgia, "Times New Roman", serif;
-  --heading-font-family: var(--font-plex-serif), Georgia, "Times New Roman", serif;
-  --strong-font-family: var(--font-plex-serif), Georgia, "Times New Roman", serif;
+  --default-font-family:
+    var(--font-plex-serif), Georgia, "Times New Roman", serif;
+  --heading-font-family:
+    var(--font-plex-serif), Georgia, "Times New Roman", serif;
+  --strong-font-family:
+    var(--font-plex-serif), Georgia, "Times New Roman", serif;
   --em-font-family: var(--font-plex-serif), Georgia, "Times New Roman", serif;
   font-family: var(--font-plex-serif), Georgia, "Times New Roman", serif;
+  font-weight: 500;
 }
 
 /* Mobile navigation drawer (opens on tap, so motion is fine; respects reduced motion) */
@@ -164,5 +168,35 @@ html body {
   }
   html {
     @apply font-sans;
+  }
+}
+@keyframes mm-acc-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+@keyframes mm-acc-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+.mm-accordion {
+  overflow: hidden;
+}
+.mm-accordion[data-state="open"] {
+  animation: mm-acc-down 200ms ease-out;
+}
+.mm-accordion[data-state="closed"] {
+  animation: mm-acc-up 200ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mm-accordion {
+    animation: none !important;
   }
 }

@@ -233,7 +233,7 @@ export function AppShell({
             </div>
             <UserMenu user={user} />
           </header>
-          <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-8 sm:px-8 lg:px-12 lg:py-10">
+          <main className="mx-auto w-full flex-1 px-4 py-4 sm:px-4 lg:px-8 lg:py-5">
             {children}
           </main>
         </div>

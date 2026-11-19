@@ -7,6 +7,9 @@ import { SpendingPie } from "@/components/dashboard/spending-pie";
 import { WeeklyLine } from "@/components/dashboard/weekly-line";
 import { RecentTransactions } from "@/components/dashboard/recent-transactions";
 
+const CARD =
+  "rounded-3xl shadow-[0_8px_30px_rgba(15,23,42,0.08),0_2px_6px_rgba(15,23,42,0.05)]";
+
 export default async function DashboardPage() {
   const user = await requireUser();
   const transactions = await fetchTransactions();
@@ -15,20 +18,22 @@ export default async function DashboardPage() {
   const firstName = user.name.split(" ")[0];
 
   return (
-    <div className="flex flex-col gap-8 lg:gap-10">
+    <div className="flex flex-col gap-4 lg:gap-5">
       {/* Top: greeting left, balance and today's spend right */}
-      <section className="rounded-lg bg-[var(--accent-a3)] px-5 py-6 sm:px-8 sm:py-8">
-        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+      <section
+        className={`${CARD} bg-[var(--accent-a3)] px-6 py-6 sm:px-8 sm:py-7`}
+      >
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <Heading as="h1" size={{ initial: "7", md: "8" }}>
               {greeting(now)}, {firstName}
             </Heading>
-            <Text as="p" size="3" color="gray" className="mt-2 italic">
+            <Text as="p" size="3" color="gray" className="mt-1.5 italic">
               {longDate(now)}
             </Text>
           </div>
 
-          <dl className="flex flex-wrap gap-x-12 gap-y-5 md:text-right">
+          <dl className="flex flex-wrap gap-x-10 gap-y-4 md:text-right">
             <div>
               <dt className="italic text-[var(--gray-11)]">Balance</dt>
               <dd
@@ -37,7 +42,7 @@ export default async function DashboardPage() {
                 {money(s.balance)}
               </dd>
             </div>
-            <div className="md:border-l md:border-[var(--accent-a6)] md:pl-12">
+            <div className="md:border-l md:border-[var(--accent-a6)] md:pl-10">
               <dt className="italic text-[var(--gray-11)]">Spent today</dt>
               <dd className="text-3xl font-bold tabular-nums">
                 {money(s.spentToday)}
@@ -48,21 +53,23 @@ export default async function DashboardPage() {
       </section>
 
       {/* Middle: one panel, two halves */}
-      <section className="grid divide-y divide-[var(--gray-a5)] rounded-lg border border-[var(--gray-a6)] bg-[var(--color-panel-solid)] lg:grid-cols-2 lg:divide-x lg:divide-y-0">
-        <div className="p-5 sm:p-7">
+      <section
+        className={`${CARD} grid divide-y divide-[var(--gray-a4)] overflow-hidden bg-[var(--color-panel-solid)] lg:grid-cols-2 lg:divide-x lg:divide-y-0`}
+      >
+        <div className="p-5 sm:p-6">
           <Heading as="h2" size="5">
             Where it went
           </Heading>
-          <Text as="p" color="gray" className="mb-6 mt-1 italic">
+          <Text as="p" color="gray" className="mb-4 mt-1 italic">
             Spending by category, {s.monthLabel}
           </Text>
           <SpendingPie data={s.byCategory} />
         </div>
-        <div className="p-5 sm:p-7">
+        <div className="p-5 sm:p-6">
           <Heading as="h2" size="5">
             The past week
           </Heading>
-          <Text as="p" color="gray" className="mb-6 mt-1 italic">
+          <Text as="p" color="gray" className="mb-4 mt-1 italic">
             Daily spending, last seven days
           </Text>
           <WeeklyLine days={s.week} />
@@ -70,8 +77,8 @@ export default async function DashboardPage() {
       </section>
 
       {/* Bottom: recent records */}
-      <section>
-        <div className="mb-3 flex items-baseline justify-between gap-4">
+      <section className={`${CARD} bg-[var(--color-panel-solid)] p-5 sm:p-6`}>
+        <div className="mb-2 flex items-baseline justify-between gap-4">
           <Heading as="h2" size="5">
             Recent records
           </Heading>

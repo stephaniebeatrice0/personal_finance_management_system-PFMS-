@@ -2,6 +2,7 @@ import "server-only";
 import { API_URL } from "@/lib/config";
 import { getAccessToken } from "@/lib/session";
 import type { Transaction } from "@/lib/finance";
+import { redirect } from "next/navigation";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function nameOf(v: any): string | undefined {
@@ -42,6 +43,10 @@ export async function fetchTransactions(): Promise<Transaction[]> {
     throw new Error(`Could not reach the API at ${url}`);
   }
 
+  if (res.status === 401) {
+    redirect("/api/session-expired");
+  }
+
   if (!res.ok) {
     console.error(
       `[transactions] ${res.status} from ${url}`,
@@ -53,4 +58,30 @@ export async function fetchTransactions(): Promise<Transaction[]> {
   const json = await res.json();
   const rows: any[] = Array.isArray(json) ? json : (json.data ?? []);
   return rows.map(toTransaction);
+}
+export type NewTransaction = {
+  type: string;
+  amount: number;
+  category: string;
+  description: string;
+  date: string;
+};
+
+export async function createTransaction(
+  input: NewTransaction,
+): Promise<
+  | { ok: true }
+  | { ok: false; message?: string; errors?: Record<string, string[]> }
+> {
+  const token = await getAccessToken();
+  let res: Response;
+  const url = `${API_URL}/transactions?per_page=500`;
+  res = await fetch(url, {
+    headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+    cache: "no-store",
+  });
+
+  if (res.ok) return { ok: true };
+  const body = await res.json().catch(() => ({}));
+  return { ok: false, message: body.message, errors: body.errors }; // Laravel 422 shape
 }
